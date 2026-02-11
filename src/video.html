@@ -17,11 +17,37 @@
         const queue = [];
         let started = false; // флаг автозапуска
 
-        // Подключаемся к WebSocket
+        const TIMEOUT_MS = 5000;
+        let inactivityTimer;
+
+        function resetTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                console.log("No data received. Closing stream.");
+                shutdown();
+            }, TIMEOUT_MS);
+        }
+
+        function shutdown() {
+            try {
+                ws.close();
+            } catch (e) { }
+
+            try {
+                if (ms.readyState === "open") {
+                    ms.endOfStream();
+                }
+            } catch (e) { }
+
+            video.pause();
+        }
+
         const ws = new WebSocket("ws://localhost:8080/stream");
         ws.binaryType = "arraybuffer";
 
         ws.onmessage = (event) => {
+            resetTimer();  // 💡 сбрасываем таймер
+
             const payload = new Uint8Array(event.data);
             queue.push(payload);
             feed();

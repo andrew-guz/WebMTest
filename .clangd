@@ -1,25 +1,6 @@
 Style:
   AngledHeaders:
-    - smm/.*
-    - gtest/.*
-    - gmock/.*
     - crow/.*
-    - ixwebsocket/.*
 Diagnostics:
   UnusedIncludes: Strict
   MissingIncludes: Strict
-  Includes:
-    IgnoreHeader:
-      - bits/.*
-      - boost/process/v1/.*
-      - fmt/base.h
-      - boost/asio/impl/.*
-      - boost/any/bad_any_cast.hpp
-      - boost/preprocessor/.*
-      - gtest/GTestWrapper.hpp
-      - odb/pgsql/query.hxx
-      - gdal_dataset.h
-      - gdal_rasterband.h
-      - gdal_fwd.h
-      - gdal_drivermanager.h
-      - gdal_driver.h

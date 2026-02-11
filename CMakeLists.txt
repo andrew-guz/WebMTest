@@ -6,13 +6,28 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_library(AVFORMAT_LIB avformat)
-find_library(AVCODEC_LIB avcodec)
-find_library(AVUTIL_LIB avutil)
-find_library(SWSCALE_LIB swscale)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
+
+find_package(FFmpeg REQUIRED COMPONENTS
+    avformat
+    avcodec
+    avutil
+    swscale
+    swresample)
 
 add_subdirectory(vendor)
 
-add_executable(${PROJECT_NAME} src/main.cpp) 
+add_executable(${PROJECT_NAME}
+    src/AVContext.cpp
+    src/main.cpp) 
 
-target_link_libraries(${PROJECT_NAME} ${AVFORMAT_LIB} ${AVCODEC_LIB} ${AVUTIL_LIB} ${SWSCALE_LIB} Crow::Crow)
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    FFMPEG::avformat
+    FFMPEG::avcodec
+    FFMPEG::avutil
+    FFMPEG::swscale
+    FFMPEG::swresample
+    Crow::Crow)
