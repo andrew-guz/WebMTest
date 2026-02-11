@@ -1,0 +1,124 @@
+BasedOnStyle: LLVM
+
+#General
+ColumnLimit: 100
+Language: Cpp
+IndentWidth: 4
+MaxEmptyLinesToKeep: 1
+TabWidth: 4
+UseTab: Never
+
+#Preprocessor
+AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+IndentPPDirectives: BeforeHash
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: "^<smm/server"
+    CaseSensitive: true
+    Priority: 2
+  - Regex: '^<(gtest|gmock|fpp|rapidcsv|CLI|tmp|application|crow|ixwebsocket|smm|odb|archive|gdal|fmt|cpl|boost|nlohmann|gsl|openssl|ixwebsocket|pugixml|yaml-cpp|gssapi)'
+    CaseSensitive: true
+    Priority: 3
+  - Regex: "<[[:alnum:]._]+>"
+    CaseSensitive: true
+    Priority: 4
+  - Regex: ".*"
+    CaseSensitive: true
+    Priority: 1
+    SortPriority: 0
+
+#Braces
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: MultiLine
+Cpp11BracedListStyle: false
+InsertBraces: true
+AlwaysBreakTemplateDeclarations: Yes
+
+#Spaces
+SeparateDefinitionBlocks: Always
+SpacesInAngles: Never
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: false
+SpacesInCStyleCastParentheses: false
+SpacesInLineCommentPrefix:
+  Maximum: 1
+  Minimum: 1
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+
+SpaceBeforeSquareBrackets: false
+SpaceBeforeCaseColon: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeCpp11BracedList: true
+SpacesBeforeTrailingComments: 4
+
+SpaceAfterTemplateKeyword: false
+SpaceAfterLogicalNot: false
+SpaceAfterCStyleCast: false
+
+SpaceAroundPointerQualifiers: Default
+
+#Breaks and empty lines
+BreakAfterAttributes: Always
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Always
+KeepEmptyLinesAtTheStartOfBlocks: false
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakAfterReturnType: None
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+BreakStringLiterals: true
+
+#Classes
+AccessModifierOffset: -4
+IndentAccessModifiers: false
+
+#Functions
+AllowShortFunctionsOnASingleLine: Empty
+AllowAllArgumentsOnNextLine: true #?
+AllowAllParametersOfDeclarationOnNextLine: true #?
+BinPackArguments: false
+
+#Control statements (for, do while, while, switch etc)
+AllowShortCaseLabelsOnASingleLine: false
+IndentCaseLabels: true
+
+#Identifiers
+PointerAlignment: Left
+ReferenceAlignment: Left
+QualifierAlignment: Custom
+QualifierOrder: ["static", "const", "type"]
+
+#Operators
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignOperands: Align
+AlignEscapedNewlines: Left
+AlignAfterOpenBracket: Align
+
+AllowShortBlocksOnASingleLine: Never
+AllowShortEnumsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+ConstructorInitializerIndentWidth: 8
+ContinuationIndentWidth: 8
+PPIndentWidth: 4
+BinPackParameters: false
+PackConstructorInitializers: NextLine
+IndentCaseBlocks: false
+InsertTrailingCommas: None
+ReflowComments: true
+SortIncludes: CaseSensitive
+
+#Comments
+AlignTrailingComments: true

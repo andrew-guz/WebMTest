@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Live WebM Stream</title>
+</head>
+
+<body>
+    <video id="video" autoplay muted playsinline controls width="640" height="480"></video>
+    <script>
+        const video = document.getElementById("video");
+        const ms = new MediaSource();
+        video.src = URL.createObjectURL(ms);
+
+        let sourceBuffer;
+        const queue = [];
+        let started = false; // флаг автозапуска
+
+        // Подключаемся к WebSocket
+        const ws = new WebSocket("ws://localhost:8080/stream");
+        ws.binaryType = "arraybuffer";
+
+        ws.onmessage = (event) => {
+            const payload = new Uint8Array(event.data);
+            queue.push(payload);
+            feed();
+
+            // Автозапуск видео при первом пакете
+            if (!started) {
+                started = true;
+                video.play().catch(err => {
+                    console.warn("Autoplay failed:", err);
+                });
+            }
+        };
+
+        ms.addEventListener("sourceopen", () => {
+            sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vp8"');
+
+            // Обрабатываем очередь при завершении update
+            sourceBuffer.addEventListener("updateend", feed);
+        });
+
+        function feed() {
+            if (!queue.length || sourceBuffer.updating) return;
+            sourceBuffer.appendBuffer(queue.shift());
+        }
+
+        // Ограничение очереди и очистка старых данных
+        const MAX_QUEUE = 50; // максимум чанков
+        setInterval(() => {
+            if (!sourceBuffer || sourceBuffer.updating) return;
+            // Убираем старые буферы, чтобы не засорять память
+            const current = video.currentTime;
+            if (current > 2) {
+                try {
+                    sourceBuffer.remove(0, current - 2);
+                } catch (e) {
+                    console.warn("Remove failed:", e);
+                }
+            }
+            if (queue.length > MAX_QUEUE) {
+                queue.splice(0, queue.length - MAX_QUEUE);
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>
