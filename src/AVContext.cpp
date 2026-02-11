@@ -3,6 +3,7 @@
 #include <CustomContext.hpp>
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
 #include <vector>
 
 extern "C" {
@@ -112,8 +113,10 @@ AVContext::~AVContext() {
 
 void AVContext::processImage(const std::vector<std::uint8_t>& frame,
                              const std::int64_t presentationTimestamp) {
+    std::cout << "Process image\n";
     if (!initMessageSent) {
         // пишем заголовок WebM (init segment)
+        std::cout << "Send init segment\n";
         static_cast<void>(avformat_write_header(this->formatContext, nullptr));
         initMessageSent = true;
     }
